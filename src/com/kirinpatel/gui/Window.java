@@ -1,6 +1,9 @@
 package com.kirinpatel.gui;
 
 import com.kirinpatel.util.Image;
+import com.kirinpatel.util.OCR;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,25 +36,21 @@ public class Window extends JFrame {
         JButton select = new JButton("Select file/folder");
         select.setSize(new Dimension(200, select.getHeight()));
         select.addActionListener(e -> {
-            try {
-                ArrayList<File> files = FileSelector.getFiles();
-                if (image != null && files != null) {
-                    images.clear();
-                    for (File file : files) {
-                        images.add(new Image(ImageIO.read(file.getAbsoluteFile())));
-                    }
-                    image.setImage(images.get(images.size() - 1));
-
-                    lastFile.setEnabled(images.size() > 1);
-                    readFile.setEnabled(true);
-                    nextFile.setEnabled(images.size() > 1);
-                    add.setEnabled(true);
-                    clear.setEnabled(true);
-                    if (images.size() > 1) setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
-                    else setTitle("simsum");
+            ArrayList<File> files = FileSelector.getFiles();
+            if (image != null && files != null) {
+                images.clear();
+                for (File file : files) {
+                    images.add(new Image(file));
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                image.setImage(images.get(images.size() - 1));
+
+                lastFile.setEnabled(images.size() > 1);
+                readFile.setEnabled(true);
+                nextFile.setEnabled(images.size() > 1);
+                add.setEnabled(true);
+                clear.setEnabled(true);
+                if (images.size() > 1) setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+                else setTitle("simsum");
             }
         });
         controls.add(select);
@@ -60,20 +59,16 @@ public class Window extends JFrame {
         add.setSize(new Dimension(200, add.getHeight()));
         add.setEnabled(false);
         add.addActionListener(e -> {
-            try {
-                ArrayList<File> files = FileSelector.getFiles();
-                if (image != null && files != null) {
-                    for (File file : files) {
-                        images.add(new Image(ImageIO.read(file.getAbsoluteFile())));
-                    }
-                    image.setImage(images.get(images.size() - 1));
-
-                    lastFile.setEnabled(true);
-                    nextFile.setEnabled(true);
-                    setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+            ArrayList<File> files = FileSelector.getFiles();
+            if (image != null && files != null) {
+                for (File file : files) {
+                    images.add(new Image(file));
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                image.setImage(images.get(images.size() - 1));
+
+                lastFile.setEnabled(true);
+                nextFile.setEnabled(true);
+                setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
             }
         });
         controls.add(add);
@@ -121,6 +116,17 @@ public class Window extends JFrame {
 
         readFile = new JButton("Read text");
         readFile.setEnabled(false);
+        readFile.addActionListener(e -> {
+            new Thread(() -> {
+                int index = images.indexOf(image.getImage());
+
+                try {
+                    System.out.println(OCR.readImage(images.get(index)));
+                } catch (TesseractException e1) {
+                    e1.printStackTrace();
+                }
+            }).start();
+        });
         viewControls.add(readFile);
 
         nextFile = new JButton(">");

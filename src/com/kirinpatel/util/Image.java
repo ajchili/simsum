@@ -1,15 +1,24 @@
 package com.kirinpatel.util;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Image {
 
+    private File file;
     private BufferedImage image;
     private int[] offset = new int[2];
     private float scale = 0f;
 
-    public Image(BufferedImage image) {
-        this.image = image;
+    public Image(File file) {
+        this.file = file;
+        try {
+            this.image = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setOffset(int[] offset) {
@@ -26,8 +35,8 @@ public class Image {
         return image;
     }
 
-    public int getOffset(int offest) {
-        return this.offset[offest];
+    public File getFile() {
+        return file;
     }
 
     public int[] getOffset() {

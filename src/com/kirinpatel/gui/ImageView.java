@@ -41,8 +41,8 @@ public class ImageView extends Canvas {
             float scale = image.getScale();
             int x = getWidth() + getWidth() * scale < getWidth() ? getWidth() : (int) Math.abs(getWidth() + getWidth() * scale);
             int y = getHeight() + getHeight() * scale < getHeight() ? getHeight() : (int) Math.abs(getHeight() + getHeight() * scale);
-            int xOffset = image.getOffset(0);
-            int yOffset = image.getOffset(1);
+            int xOffset = image.getOffset()[0];
+            int yOffset = image.getOffset()[1];
 
             g.drawImage(image.getImage(), xOffset, yOffset, x, y, this);
         }
@@ -93,7 +93,7 @@ public class ImageView extends Canvas {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            int[] offset = { image.getOffset(0) + (e.getX() - startingX), image.getOffset(1) + (e.getY() - startingY) };
+            int[] offset = { image.getOffset()[0] + (e.getX() - startingX), image.getOffset()[1] + (e.getY() - startingY) };
 
             if (offset[0] > getWidth()) offset[0] = getWidth();
             else if (offset[0] < getWidth() * -1) offset[0] = getWidth() * -1;
