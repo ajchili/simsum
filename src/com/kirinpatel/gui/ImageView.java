@@ -61,7 +61,7 @@ public class ImageView extends Canvas {
             if (lastClick < System.currentTimeMillis() + 200 && image != null) {
                 int[] offset = { 0, 0 };
                 image.setOffset(offset);
-                image.setScale(0);
+                image.resetScale();
                 repaint();
             }
 

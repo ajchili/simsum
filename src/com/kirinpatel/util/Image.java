@@ -25,6 +25,10 @@ public class Image {
         this.offset = offset;
     }
 
+    public void resetScale() {
+        scale = 0f;
+    }
+
     public void setScale(float scale) {
         this.scale += scale;
         if (this.scale < 0) this.scale = 0;
