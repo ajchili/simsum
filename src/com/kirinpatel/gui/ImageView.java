@@ -4,6 +4,7 @@ import com.kirinpatel.util.Image;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class ImageView extends Canvas {
 
@@ -47,8 +48,16 @@ public class ImageView extends Canvas {
             g.drawImage(image.getImage(), xOffset, yOffset, x, y, this);
         }
     }
+
     public Image getImage() {
         return image;
+    }
+
+    public BufferedImage getView() {
+        BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bufferedImage.createGraphics();
+        paint(g);
+        return bufferedImage;
     }
 
     class ImageListener implements MouseListener, MouseMotionListener, MouseWheelListener {

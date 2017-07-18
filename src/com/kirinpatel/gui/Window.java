@@ -121,7 +121,7 @@ public class Window extends JFrame {
                 int index = images.indexOf(image.getImage());
 
                 try {
-                    System.out.println(OCR.readImage(images.get(index)));
+                    System.out.println(images.get(index).getScale() == 0f ? OCR.readImage(images.get(0)) : OCR.readImage(image.getView()));
                 } catch (TesseractException e1) {
                     e1.printStackTrace();
                 }
