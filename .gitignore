@@ -22,8 +22,6 @@
 hs_err_pid*
 /bin/
 
-\.idea/misc\.xml
-\.idea/vcs\.xml
-\.idea/workspace\.xml
-
 testing/
+\.idea/
+simsum.iml
