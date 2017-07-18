@@ -5,6 +5,7 @@ import com.kirinpatel.util.Image;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,6 +13,8 @@ public class Window extends JFrame {
 
     private ImageView image;
     private ArrayList<Image> images = new ArrayList<>();
+    private JButton add;
+    private JButton clear;
     private JButton lastFile;
     private JButton readFile;
     private JButton nextFile;
@@ -31,35 +34,66 @@ public class Window extends JFrame {
         select.setSize(new Dimension(200, select.getHeight()));
         select.addActionListener(e -> {
             try {
-                images.add(new Image(ImageIO.read(FileSelector.getFiles().get(0))));
-                if (image != null) image.setImage(images.get(images.size() - 1));
+                ArrayList<File> files = FileSelector.getFiles();
+                if (image != null && files != null) {
+                    images.clear();
+                    for (File file : files) {
+                        images.add(new Image(ImageIO.read(file.getAbsoluteFile())));
+                    }
+                    image.setImage(images.get(images.size() - 1));
+
+                    lastFile.setEnabled(images.size() > 1);
+                    readFile.setEnabled(true);
+                    nextFile.setEnabled(images.size() > 1);
+                    add.setEnabled(true);
+                    clear.setEnabled(true);
+                    if (images.size() > 1) setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+                    else setTitle("simsum");
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
-            lastFile.setEnabled(images.size() > 1);
-            readFile.setEnabled(images.size() > 0);
-            nextFile.setEnabled(images.size() > 1);
-            if (images.size() > 1) setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
-            else setTitle("simsum");
         });
         controls.add(select);
 
-        JButton add = new JButton("Add file/folder");
+        add = new JButton("Add file/folder");
         add.setSize(new Dimension(200, add.getHeight()));
+        add.setEnabled(false);
         add.addActionListener(e -> {
             try {
-                images.add(new Image(ImageIO.read(FileSelector.getFiles().get(0))));
-                if (image != null) image.setImage(images.get(images.size() - 1));
+                ArrayList<File> files = FileSelector.getFiles();
+                if (image != null && files != null) {
+                    for (File file : files) {
+                        images.add(new Image(ImageIO.read(file.getAbsoluteFile())));
+                    }
+                    image.setImage(images.get(images.size() - 1));
+
+                    lastFile.setEnabled(true);
+                    nextFile.setEnabled(true);
+                    setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
-            lastFile.setEnabled(images.size() > 1);
-            readFile.setEnabled(images.size() > 0);
-            nextFile.setEnabled(images.size() > 1);
         });
         controls.add(add);
+
+        clear = new JButton("Clear file(s)");
+        clear.setSize(new Dimension(200, clear.getHeight()));
+        clear.setEnabled(false);
+        clear.addActionListener(e -> {
+            images.clear();
+            image.clearImage();
+
+            lastFile.setEnabled(false);
+            readFile.setEnabled(false);
+            nextFile.setEnabled(false);
+            setTitle("simsum");
+
+            add.setEnabled(false);
+            clear.setEnabled(false);
+        });
+        controls.add(clear);
 
         add(controls, BorderLayout.WEST);
 

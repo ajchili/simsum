@@ -14,7 +14,7 @@ public class FileSelector {
         ArrayList<File> files = new ArrayList<>();
 
         File selectedFile = mediaSelector.getSelectedFile();
-        if (selectedFile == null) return files;
+        if (selectedFile == null) return null;
         else {
             if (selectedFile.isDirectory()) {
                 return files;

@@ -26,10 +26,18 @@ public class ImageView extends Canvas {
         repaint();
     }
 
+    public void clearImage() {
+        this.image = null;
+        repaint();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (image != null) {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+
             float scale = image.getScale();
             int x = getWidth() + getWidth() * scale < getWidth() ? getWidth() : (int) Math.abs(getWidth() + getWidth() * scale);
             int y = getHeight() + getHeight() * scale < getHeight() ? getHeight() : (int) Math.abs(getHeight() + getHeight() * scale);
@@ -53,6 +61,7 @@ public class ImageView extends Canvas {
             if (lastClick < System.currentTimeMillis() + 200 && image != null) {
                 int[] offset = { 0, 0 };
                 image.setOffset(offset);
+                image.setScale(0);
                 repaint();
             }
 
