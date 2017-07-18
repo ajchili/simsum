@@ -12,6 +12,9 @@ public class Window extends JFrame {
 
     private ImageView image;
     private ArrayList<Image> images = new ArrayList<>();
+    private JButton lastFile;
+    private JButton readFile;
+    private JButton nextFile;
 
     public Window() {
         super("simsum");
@@ -33,6 +36,12 @@ public class Window extends JFrame {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
+            lastFile.setEnabled(images.size() > 1);
+            readFile.setEnabled(images.size() > 0);
+            nextFile.setEnabled(images.size() > 1);
+            if (images.size() > 1) setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+            else setTitle("simsum");
         });
         controls.add(select);
 
@@ -45,6 +54,10 @@ public class Window extends JFrame {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
+            lastFile.setEnabled(images.size() > 1);
+            readFile.setEnabled(images.size() > 0);
+            nextFile.setEnabled(images.size() > 1);
         });
         controls.add(add);
 
@@ -56,7 +69,39 @@ public class Window extends JFrame {
         view.add(image, BorderLayout.CENTER);
         image.repaint();
 
-        JPanel viewControls = new JPanel(new GridLayout(1, 7));
+        JPanel viewControls = new JPanel(new GridLayout(1, 5));
+
+        viewControls.add(new JPanel());
+
+        lastFile = new JButton("<");
+        lastFile.setEnabled(false);
+        lastFile.addActionListener(e -> {
+            int index = images.indexOf(image.getImage());
+
+            if (index == 0) image.setImage(images.get(images.size() - 1));
+            else image.setImage(images.get(index - 1));
+
+            setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+        });
+        viewControls.add(lastFile);
+
+        readFile = new JButton("Read text");
+        readFile.setEnabled(false);
+        viewControls.add(readFile);
+
+        nextFile = new JButton(">");
+        nextFile.setEnabled(false);
+        nextFile.addActionListener(e -> {
+            int index = images.indexOf(image.getImage());
+
+            if (index == images.size() - 1) image.setImage(images.get(0));
+            else image.setImage(images.get(index + 1));
+
+            setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+        });
+        viewControls.add(nextFile);
+
+        viewControls.add(new JPanel());
 
         view.add(viewControls, BorderLayout.SOUTH);
 

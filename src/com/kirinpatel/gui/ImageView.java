@@ -39,6 +39,9 @@ public class ImageView extends Canvas {
             g.drawImage(image.getImage(), xOffset, yOffset, x, y, this);
         }
     }
+    public Image getImage() {
+        return image;
+    }
 
     class ImageListener implements MouseListener, MouseMotionListener, MouseWheelListener {
 
