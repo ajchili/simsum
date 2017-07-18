@@ -95,10 +95,13 @@ public class ImageView extends Canvas {
         public void mouseDragged(MouseEvent e) {
             int[] offset = { image.getOffset()[0] + (e.getX() - startingX), image.getOffset()[1] + (e.getY() - startingY) };
 
-            if (offset[0] > getWidth()) offset[0] = getWidth();
-            else if (offset[0] < getWidth() * -1) offset[0] = getWidth() * -1;
-            if (offset[1] > getHeight()) offset[1] = getHeight();
-            else if (offset[1] < getHeight() * -1) offset[1] = getHeight() * -1;
+            int width = getWidth() + (int) (getWidth() * image.getScale());
+            int height = getHeight() + (int) (getHeight() * image.getScale());
+
+            if (offset[0] > width) offset[0] = width;
+            else if (offset[0] < width * -1) offset[0] = width * -1;
+            if (offset[1] > height) offset[1] = height;
+            else if (offset[1] < height * -1) offset[1] = height * -1;
 
             if (image != null) image.setOffset(offset);
             startingX = e.getX();
