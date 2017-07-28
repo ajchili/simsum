@@ -17,11 +17,6 @@ public class ImageView extends Canvas {
         addMouseWheelListener(imageListener);
     }
 
-    public ImageView(Image image) {
-        this();
-        setImage(image);
-    }
-
     public void setImage(Image image) {
         this.image = image;
         repaint();
