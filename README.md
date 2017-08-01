@@ -4,7 +4,7 @@ A [Tesseract](https://github.com/tesseract-ocr/tesseract) and [tess4j](https://g
 ## setup and usage
 1. Download and install Tesseract
    * This can be done multiple ways, please view the [Tesseract wiki](https://github.com/tesseract-ocr/tesseract/wiki#installation) for detailed instructions for your platform
-2. Download simsum _(currently not avaliable in precompiled form)_
+2. Download [simsum](https://github.com/ajchili/simsum/releases)
 3. Launch simsum
    1. Start by selecting a file/folder that contains images of text that you would like simsum to parse
    2. Navigate to your file inside of simsum if more than one file have been selected or added
