@@ -1,9 +1,9 @@
-package com.kirinpatel;
+package com.kirinpatel.simsum;
 
-import com.kirinpatel.gui.Window;
+import com.kirinpatel.simsum.gui.Window;
 import net.sourceforge.tess4j.Tesseract;
 
-public class Main {
+public class Simsum {
 
     public static final Tesseract INSTANCE = new Tesseract();
 

@@ -11,6 +11,7 @@ public class Image {
     private BufferedImage image;
     private int[] offset = new int[2];
     private float scale = 0f;
+    private String OCRText = "";
 
     public Image(File file) {
         this.file = file;
@@ -35,6 +36,10 @@ public class Image {
         else if (this.scale > 10) this.scale = 10;
     }
 
+    public void setOCRText(String OCRText) {
+        this.OCRText = OCRText;
+    }
+
     public BufferedImage getImage() {
         return image;
     }
@@ -49,5 +54,9 @@ public class Image {
 
     public float getScale() {
         return scale;
+    }
+
+    public String getOCRText() {
+        return OCRText;
     }
 }

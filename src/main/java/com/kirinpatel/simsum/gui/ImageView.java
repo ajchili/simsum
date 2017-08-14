@@ -10,19 +10,19 @@ public class ImageView extends Canvas {
 
     private Image image;
 
-    public ImageView() {
+    ImageView() {
         ImageListener imageListener = new ImageListener();
         addMouseListener(imageListener);
         addMouseMotionListener(imageListener);
         addMouseWheelListener(imageListener);
     }
 
-    public void setImage(Image image) {
+    void setImage(Image image) {
         this.image = image;
         repaint();
     }
 
-    public void clearImage() {
+    void clearImage() {
         this.image = null;
         repaint();
     }

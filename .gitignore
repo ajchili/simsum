@@ -25,3 +25,5 @@ hs_err_pid*
 testing/
 \.idea/
 simsum.iml
+
+src/META-INF/MANIFEST\.MF
