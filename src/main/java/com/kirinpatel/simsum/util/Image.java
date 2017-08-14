@@ -1,4 +1,4 @@
-package com.kirinpatel.util;
+package com.kirinpatel.simsum.util;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

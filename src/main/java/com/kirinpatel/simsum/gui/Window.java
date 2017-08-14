@@ -1,7 +1,7 @@
-package com.kirinpatel.gui;
+package com.kirinpatel.simsum.gui;
 
-import com.kirinpatel.util.Image;
-import com.kirinpatel.util.OCR;
+import com.kirinpatel.simsum.util.Image;
+import com.kirinpatel.simsum.util.OCR;
 import net.sourceforge.tess4j.TesseractException;
 
 import javax.swing.*;
@@ -14,11 +14,14 @@ public class Window extends JFrame {
     private ImageView image;
     private ArrayList<Image> images = new ArrayList<>();
     private JButton add;
+    private JButton remove;
     private JButton clear;
+    private JButton mode;
     private JButton lastFile;
     private JButton readFile;
     private JButton nextFile;
     private JTextArea OCRTextArea;
+    private int ocrMode = 0;
 
     public Window() {
         super("simsum");
@@ -39,13 +42,15 @@ public class Window extends JFrame {
                 for (File file : files) {
                     images.add(new Image(file));
                 }
-                image.setImage(images.get(images.size() - 1));
+                image.setImage(images.get(0));
 
                 lastFile.setEnabled(images.size() > 1);
                 readFile.setEnabled(true);
                 nextFile.setEnabled(images.size() > 1);
                 add.setEnabled(true);
+                remove.setEnabled(true);
                 clear.setEnabled(true);
+                mode.setEnabled(true);
                 if (images.size() > 1) {
                     setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
                 } else {
@@ -71,6 +76,36 @@ public class Window extends JFrame {
             }
         });
         controls.add(add);
+        remove = new JButton("Remove file");
+        remove.setSize(new Dimension(200, remove.getHeight()));
+        remove.setEnabled(false);
+        remove.addActionListener(e -> {
+            int index = images.indexOf(image.getImage());
+            images.remove(index);
+            if (images.size() == 0) {
+                image.clearImage();
+
+                lastFile.setEnabled(false);
+                readFile.setEnabled(false);
+                nextFile.setEnabled(false);
+                setTitle("simsum");
+
+                add.setEnabled(false);
+                clear.setEnabled(false);
+                mode.setEnabled(false);
+                OCRTextArea.setText("");
+                ocrMode = 0;
+            } else {
+                if (index < images.size()) {
+                    image.setImage(images.get(index));
+                } else {
+                    image.setImage(images.get(index - 1));
+                }
+                setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+                OCRTextArea.setText(images.get(index).getOCRText());
+            }
+        });
+        controls.add(remove);
         clear = new JButton("Clear file(s)");
         clear.setSize(new Dimension(200, clear.getHeight()));
         clear.setEnabled(false);
@@ -85,8 +120,23 @@ public class Window extends JFrame {
 
             add.setEnabled(false);
             clear.setEnabled(false);
+            mode.setEnabled(false);
+            OCRTextArea.setText("");
+            ocrMode = 0;
         });
         controls.add(clear);
+        mode = new JButton("Mode (scale)");
+        mode.setSize(new Dimension(200, mode.getHeight()));
+        mode.setEnabled(false);
+        mode.addActionListener(e -> {
+            ocrMode = (ocrMode + 1) % 2;
+            if (ocrMode == 0)  {
+                mode.setText("Mode (scale)");
+            } else {
+                mode.setText("Mode (section)");
+            }
+        });
+        controls.add(mode);
         add(controls, BorderLayout.WEST);
 
         JPanel view = new JPanel(new BorderLayout());
@@ -106,6 +156,7 @@ public class Window extends JFrame {
                 image.setImage(images.get(index - 1));
             }
             setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+            OCRTextArea.setText(image.getImage().getOCRText());
         });
         viewControls.add(lastFile);
         readFile = new JButton("Read text");
@@ -116,7 +167,7 @@ public class Window extends JFrame {
                 if (images.get(index).getScale() == 0f) {
                     images.get(index).setOCRText(OCR.readImage(images.get(index)));
                 } else {
-                    images.get(index).setOCRText(OCR.readImage(image.getView()));
+                    images.get(index).setOCRText(OCR.readImage(images.get(index)));
                 }
                 OCRTextArea.setText(images.get(index).getOCRText());
             } catch (TesseractException e1) {
@@ -133,14 +184,14 @@ public class Window extends JFrame {
             } else {
                 image.setImage(images.get(index + 1));
             }
-            OCRTextArea.setText(images.get(index).getOCRText());
             setTitle("simsum (" + (images.indexOf(image.getImage()) + 1) + "/" + images.size() + ")");
+            OCRTextArea.setText(images.get(index).getOCRText());
         });
         viewControls.add(nextFile);
         viewControls.add(new JPanel());
         view.add(viewControls, BorderLayout.SOUTH);
 
-        OCRTextArea = new JTextArea("kjhkj");
+        OCRTextArea = new JTextArea();
         OCRTextArea.setRows(4);
         OCRTextArea.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(OCRTextArea);

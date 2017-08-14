@@ -1,6 +1,6 @@
-package com.kirinpatel.gui;
+package com.kirinpatel.simsum.gui;
 
-import com.kirinpatel.util.Image;
+import com.kirinpatel.simsum.util.Image;
 
 import java.awt.*;
 import java.awt.event.*;
