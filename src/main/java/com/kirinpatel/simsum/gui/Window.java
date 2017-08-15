@@ -91,6 +91,7 @@ public class Window extends JFrame {
                 setTitle("simsum");
 
                 add.setEnabled(false);
+                remove.setEnabled(false);
                 clear.setEnabled(false);
                 mode.setEnabled(false);
                 OCRTextArea.setText("");
@@ -119,6 +120,7 @@ public class Window extends JFrame {
             setTitle("simsum");
 
             add.setEnabled(false);
+            remove.setEnabled(false);
             clear.setEnabled(false);
             mode.setEnabled(false);
             OCRTextArea.setText("");
