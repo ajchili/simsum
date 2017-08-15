@@ -27,3 +27,5 @@ testing/
 simsum.iml
 
 src/META-INF/MANIFEST\.MF
+
+target/*

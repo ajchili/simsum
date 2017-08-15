@@ -7,14 +7,12 @@ import java.io.IOException;
 
 public class Image {
 
-    private File file;
     private BufferedImage image;
     private int[] offset = new int[2];
     private float scale = 0f;
     private String OCRText = "";
 
     public Image(File file) {
-        this.file = file;
         try {
             this.image = ImageIO.read(file);
         } catch (IOException e) {
@@ -42,10 +40,6 @@ public class Image {
 
     public BufferedImage getImage() {
         return image;
-    }
-
-    public File getFile() {
-        return file;
     }
 
     public int[] getOffset() {

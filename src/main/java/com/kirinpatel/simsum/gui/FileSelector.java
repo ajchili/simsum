@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 
-class FileSelector {
+public class FileSelector {
 
-    static ArrayList<File> getFiles() {
+    public ArrayList<File> getFiles() {
         JFileChooser mediaSelector = new JFileChooser("");
         mediaSelector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         mediaSelector.showOpenDialog(null);
@@ -19,7 +19,9 @@ class FileSelector {
         } else {
             if (selectedFile.isDirectory()) {
                 for (File file : selectedFile.listFiles()) {
-                    if (!file.isDirectory() && (file.getName().toLowerCase().contains(".png") || file.getName().toLowerCase().contains(".jpg"))) {
+                    if (!file.isDirectory()
+                            && (file.getName().toLowerCase().contains(".png")
+                            || file.getName().toLowerCase().contains(".jpg"))) {
                         files.add(file);
                     }
                 }

@@ -1,7 +1,7 @@
 package com.kirinpatel.simsum.gui;
 
+import com.kirinpatel.simsum.Simsum;
 import com.kirinpatel.simsum.util.Image;
-import com.kirinpatel.simsum.util.OCR;
 import net.sourceforge.tess4j.TesseractException;
 
 import javax.swing.*;
@@ -29,14 +29,14 @@ public class Window extends JFrame {
 
         setMinimumSize(new Dimension(600, 400));
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel controls = new JPanel(new GridLayout(5, 1));
         JButton select = new JButton("Select file/folder");
         select.setSize(new Dimension(200, select.getHeight()));
         select.addActionListener(e -> {
-            ArrayList<File> files = FileSelector.getFiles();
+            ArrayList<File> files = Simsum.FILE_SELECTOR.getFiles();
             if (image != null && files != null) {
                 images.clear();
                 for (File file : files) {
@@ -63,7 +63,7 @@ public class Window extends JFrame {
         add.setSize(new Dimension(200, add.getHeight()));
         add.setEnabled(false);
         add.addActionListener(e -> {
-            ArrayList<File> files = FileSelector.getFiles();
+            ArrayList<File> files = Simsum.FILE_SELECTOR.getFiles();
             if (image != null && files != null) {
                 for (File file : files) {
                     images.add(new Image(file));
@@ -165,9 +165,9 @@ public class Window extends JFrame {
             int index = images.indexOf(image.getImage());
             try {
                 if (images.get(index).getScale() == 0f) {
-                    images.get(index).setOCRText(OCR.readImage(images.get(index)));
+                    images.get(index).setOCRText(Simsum.OCR.readImage(images.get(index)));
                 } else {
-                    images.get(index).setOCRText(OCR.readImage(images.get(index)));
+                    images.get(index).setOCRText(Simsum.OCR.readImage(image.getView()));
                 }
                 OCRTextArea.setText(images.get(index).getOCRText());
             } catch (TesseractException e1) {

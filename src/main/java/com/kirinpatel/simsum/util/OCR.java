@@ -8,11 +8,11 @@ import java.awt.image.BufferedImage;
 
 public class OCR extends Tesseract {
 
-    public static String readImage(Image image) throws TesseractException {
+    public String readImage(Image image) throws TesseractException {
         return Simsum.INSTANCE.doOCR(image.getImage());
     }
 
-    public static String readImage(BufferedImage image) throws TesseractException {
+    public String readImage(BufferedImage image) throws TesseractException {
         return Simsum.INSTANCE.doOCR(image);
     }
 }
